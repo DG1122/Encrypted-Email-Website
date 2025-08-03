@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d0d;
+            color: #ffffff;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1a1a1a;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e63946;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tabs {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .tab:hover {
+            background-color: #d60000;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background-color: #d60000;
+        }
+
+        .tab i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #0d0d0d;
+        }
+
+        .compose-button {
+            background-color: #e63946;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .compose-button:hover {
+            background-color: #d60000;
+        }
+
+        .compose-area {
+            margin-top: 20px;
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #e63946;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: white;
+        }
+
+        .send-button {
+            background-color: #e63946;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background-color: #d60000;
+        }
+
+        .cancel-button {
+            background-color: #757575;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-button:hover {
+            background-color: #616161;
+        }
+
+        .message-list {
+            margin-top: 20px;
+        }
+
+        .message-item {
+            background-color: #2c2c2c;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .message-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #e63946;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #as {
+            color: #ffffff;
+        }
+
+        .message-list {
+            margin-top: 20px;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: center;
+            background-color: #2c2c2c;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .message-item:hover {
+            background-color: #3a3a3a;
+            transform: translateX(5px);
+        }
+
+        .message-sender {
+            width: 20%;
+            font-weight: bold;
+            color: #e63946;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .message-details {
+            flex: 1;
+            padding: 0 15px;
+            overflow: hidden;
+        }
+
+        .message-subject {
+            font-weight: 500;
+            color: #ffffff;
+            margin-right: 10px;
+        }
+
+        .message-snippet {
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+
+        .message-actions {
+            width: 10%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            /* Space between icons */
+            padding: 0 10px;
+        }
+
+        .message-actions i {
+            font-size: 16px;
+            color: #757575;
+            /* Default gray color */
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .message-actions i:hover {
+            color: #e63946;
+            /* Red on hover to match theme */
+            transform: scale(1.2);
+            /* Slight enlarge effect */
+        }
+
+        .message-actions .fa-star.active {
+            color: #ffd700;
+            /* Gold for starred state */
+        }
+
+        .message-meta {
+            width: 25%;
+            text-align: right;
+            color: #757575;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .message-date {
+            color: #e63946;
+        }
+
+        .message-time-extra {
+            color: #b0b0b0;
+        }
+
+        .message-item.empty {
+            justify-content: center;
+            color: #757575;
+            font-style: italic;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .cont {
+            width: 76%;
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="logo"
+            style="color: #ff0000; font-size: 50px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;">
+            MIMS</div>
+            <div class="compose-button" onclick="toggleCompose()">Compose</div>
+            
+        <ul class="tabs">
+
+            <a id="as" href="{% url 'User:Myprofile' %}">
+                <li class="tab"><i class="fas fa-inbox"></i>My Profile</li>
+            </a>
+            <a href="{% url 'User:Homepage' %}">
+                <li class="tab"><i class="fas fa-inbox"></i>Inbox</li>
+            </a>
+            <a href="{% url 'User:starred' %}">
+                <li class="tab"><i class="fas fa-star"></i>Starred</li>
+            </a>
+            <a href="{% url 'User:send' %}">
+                <li class="tab"><i class="fas fa-paper-plane"></i> Sent</li>
+            </a>
+            <a href="{% url 'User:deletedmail' %}">
+                <li class="tab"><i class="fas fa-trash"></i> Trash</li>
+            </a>
+            <a href="{% url 'User:logout' %}"><li class="tab"><i class="fas fa-tags"></i> Logout</li></a>
+            <!-- <li class="tab"><i class="fas fa-cog"></i> Settings</Mli> -->
+        </ul>
+    </div>
+    <div class="main">
+        <div class="compose-area hidden" id="composeArea">
+            <h2>New Message</h2>
+            <input type="text" placeholder="To" id="txt_To" class="input-field" />
+            <input type="text" placeholder="Subject" id="txt_Subject" class="input-field" />
+            <textarea placeholder="Message..." id="txt_message" class="input-field message-area"></textarea>
+            <button class="send-button" onclick="sendMessage()">Send</button>
+            <button class="cancel-button" onclick="toggleCompose()">Cancel</button>
+        </div>
+<div class="message-list">
+    <h2>Your Messages</h2>
+    {% for i in mail %}
+    <a href="{% url 'User:viewmail' i.id %}" class="cont">
+        <div class="message-item">
+        <div class="message-sender">{{ i.user_from.user_name }}</div>
+        <div class="message-details">
+            <span class="message-subject">You Have A Message</span>
+            <!-- <span class="message-snippet">{{ i.mail_content|truncatechars:50 }}</span> --> 
+        </div>
+        <div class="message-actions">
+            <a href="#" onclick="addtofav('{{i.id}}','{{forloop.counter}}')"><i class="fas fa-star" title="Star"
+                    id="star{{forloop.counter}}" {% if i.status == 1 %} style="color: #e63946;" {% endif %}></i></a>
+            <a href="{% url 'User:deletemail' i.id %}"><i class="fas fa-trash" title="Delete"></i></a>
+        </div>
+        <div class="message-meta">
+            <span class="message-date">{{ i.mail_date }}</span>
+            <span class="message-time-extra">{{ i.mail_time }}</span>
+        </div>
+    </div>
+    </a>
+    
+    {% empty %}
+    <div class="message-item empty">No Messages</div>
+    {% endfor %}
+</div>
+</div>
+</div>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location = "{% url 'User:Homepage' %}"
+</script>
+{% endif %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function toggleCompose() {
+        const composeArea = document.getElementById('composeArea');
+        composeArea.classList.toggle('hidden');
+    }
+
+    function sendMessage() {
+        var to = document.getElementById("txt_To").value
+        var subject = document.getElementById("txt_Subject").value
+        var message = document.getElementById("txt_message").value
+        var ur = "{% url 'User:ajaxmessage' %}";
+        $.ajax({
+            url: ur,
+            data: { to: to, subject: subject, message: message, },
+            success: function (data) {
+                alert(data.msg);
+                toggleCompose();
+                window.location = "{% url 'User:Homepage' %}"
+            },
+        });
+    }
+
+    function addtofav(mailid, num) {
+        var ur = "{% url 'User:ajaxaddfav' %}";
+        $.ajax({
+            url: ur,
+            data: { mailid: mailid, },
+            success: function (data) {
+                alert(data.msg);
+                window.location = "{% url 'User:Homepage' %}"
+            },
+        });
+    }
+
+</script>
+</body>
+
+</html>

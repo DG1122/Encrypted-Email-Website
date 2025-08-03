@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111; /* Dark background */
+            color: #fff; /* White text */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.5s; /* Smooth background transition */
+        }
+
+        .profile-container {
+            background-color: #222; /* Darker container */
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            text-align: center;
+            transition: transform 0.3s; /* Animation effect */
+        }
+
+        .profile-container:hover {
+            transform: scale(1.02); /* Slightly scale up on hover */
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ff0015; /* Red color for headings */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        tr {
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background */
+        }
+
+        tr:nth-child(even) {
+            background: linear-gradient(135deg, #333, #444); /* Gradient background for even rows */
+        }
+
+        tr:nth-child(odd) {
+            background: linear-gradient(135deg, #444, #555); /* Gradient background for odd rows */
+        }
+
+        tr:hover {
+            background: linear-gradient(135deg, #200d0e, #000000); /* Bright red gradient on hover */
+            transform: scale(1.01); /* Slight scale effect on hover */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Box shadow on hover */
+        }
+
+        td {
+            padding: 15px; /* Increased padding for a better look */
+            font-size: 16px;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid #444; /* Border to separate rows */
+        }
+
+        td img {
+            border-radius: 50%;
+            border: 3px solid #ff0015; /* Red border for image */
+            transition: border 0.3s; /* Smooth border transition */
+        }
+
+        td img:hover {
+            border: 3px solid #fff; /* Change border to white on hover */
+        }
+        #ad{
+            background-color: #444;
+        }
+
+        td a,
+        #ad {
+            font-size: 16px;
+            color: #ff0015; /* Red text color for links */
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 8px 16px;
+            border: 2px solid #ff0015; /* Red border for links */
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Transition for hover effects */
+        }
+        #ad:hover{
+            background-color: #000000; /* Dark background on hover */
+            color: white; /* White text on hover */
+            transform: translateY(-2px); /* Slight upward movement on hover */
+        }
+
+        td a:hover {
+            background-color: #000000; /* Dark background on hover */
+            color: white; /* White text on hover */
+            transform: translateY(-2px); /* Slight upward movement on hover */
+        }
+
+        .alert {
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #e74c3c; /* Bright red for alerts */
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 4px;
+            animation: fadeIn 0.5s; /* Fade-in effect for alert */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                width: 90%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>User Profile</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td colspan="2"><img src="{{user.user_photo.url}}" width="150" height="150" alt="User Photo"></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{user.user_name}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{user.user_email}}</td>
+                </tr>
+                <tr>
+                    <td>Contact</td>
+                    <td>{{user.user_contact}}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{user.user_address}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <a href="{% url 'User:Editprofile' %}">Edit Profile</a>
+                        <a href="{% url 'User:Changepassword' %}">Change Password</a>
+                        <input type="button" onclick="userSignUp()" value="Back" id="ad">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        {% if msg %}
+        <div class="alert">
+            <script>
+                alert("{{msg}}");
+                window.location = "{% url 'User:Myprofile' %}";
+            </script>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        function userSignUp() {
+            window.location.href = '{% url 'User:Homepage' %}';
+            // Redirect or handle user sign up logic here
+        }
+    </script>
+</body>
+</html>

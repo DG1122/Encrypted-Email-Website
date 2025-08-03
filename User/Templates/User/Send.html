@@ -1,0 +1,59 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<div class="compose-area hidden" id="composeArea">
+    <h2>New Message</h2>
+    <input type="text" placeholder="To" id="txt_To" class="input-field" />
+    <input type="text" placeholder="Subject" id="txt_Subject" class="input-field" />
+    <textarea placeholder="Message..." id="txt_message" class="input-field message-area"></textarea>
+    <button class="send-button" onclick="sendMessage()">Send</button>
+    <button class="cancel-button" onclick="toggleCompose()">Cancel</button>
+</div>
+            <div class="message-list">
+                <h2>Send Messages</h2>
+                {% for i in mail %}
+                <a href="{% url 'User:viewmail' i.id %}">
+                    <div class="message-item">
+                        <div class="message-sender">{{ i.user_from.user_name }}</div>
+                        <div class="message-details">
+                            <span class="message-subject">You Have A Message</span>
+                            <!-- <span class="message-snippet">{{ i.mail_content|truncatechars:50 }}</span> -->
+                        </div>
+                        <div class="message-meta">
+                            <span class="message-date">{{ i.mail_date }}</span>
+                            <span class="message-time-extra">{{ i.mail_time }}</span>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="message-item empty">No Messages</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </script>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function toggleCompose() {
+        const composeArea = document.getElementById('composeArea');
+        composeArea.classList.toggle('hidden');
+    }
+
+    function sendMessage() {
+        var to = document.getElementById("txt_To").value
+        var subject = document.getElementById("txt_Subject").value
+        var message = document.getElementById("txt_message").value
+        var ur = "{% url 'User:ajaxmessage' %}";
+        $.ajax({
+            url: ur,
+            data: { to: to, subject: subject, message: message, },
+            success: function (data) {
+                alert(data.msg);
+                toggleCompose();
+                window.location = "{% url 'User:Homepage' %}"
+            },
+        });
+    }
+</script>
+{% endblock content %}

@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif; /* Default font */
+            overflow: hidden; /* Hide scrollbars */
+            background: black; /* Fallback background */
+        }
+
+        /* Animated Background */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{% static 'Admin/img/mims2.jpg' %}'); /* Replace with your encryption-themed image URL */
+            background-size: cover;
+            animation: zoom 10s infinite alternate; /* Animation for background movement */
+            z-index: -1; /* Place behind the form */
+        }
+
+        @keyframes zoom {
+            0% {
+                background-size: 100%;
+                background-position: center; /* Start with regular size */
+            }
+            50% {
+                background-size: 140%;
+                background-position: center; /* Zoom in */
+            }
+            100% {
+                background-size: 120%;
+                background-position: center; /* Zoom out to original size */
+            }
+        }
+
+        .form-container {
+            position: relative; /* Position relative to allow z-index */
+            background-color: rgba(0, 0, 0, 0.623); /* Semi-transparent black background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(225, 32, 32, 0.7); /* Red shadow */
+            width: 400px;
+            margin: auto; /* Center the form */
+            margin-top: 50px; /* Space from the top */
+            transition: transform 0.3s ease; /* Smooth transformation */
+            opacity: 0; /* Start hidden */
+            margin-bottom: 50px;
+            visibility: hidden; /* Hide initially */
+            transition: opacity 0.5s ease, visibility 0.5s ease; /* Transition for opacity and visibility */
+        }
+
+        .form-container.show {
+            opacity: 1; /* Show the form */
+            visibility: visible; /* Set visibility to visible */
+        }
+
+        /* .form-container:hover {
+            transform: scale(0);  Scale up on hover 
+        } */
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 32px; /* Increased font size */
+            font-family: 'Orbitron', sans-serif; /* Futuristic font */
+            color: #ff0000; /* Red text */
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Red glow effect */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+            color: rgb(255, 0, 0); /* Red text color */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ff0000; /* Red border */
+            border-radius: 5px;
+            background-color: #1a1a1a; /* Dark background for inputs */
+            color: #ff0000; /* Red text color for inputs */
+            font-size: 16px;
+            transition: background-color 0.3s ease; /* Transition effect */
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        select:focus {
+            background-color: #333; /* Darker background on focus */
+        }
+
+        input[type="submit"],
+        #ad,
+        input[type="reset"],
+        #generateKeyButton,
+        #copyKeyButton {
+            background-color: #ff0000; /* Red background for buttons */
+            border: none;
+            color: #000; /* Black text color */
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease; /* Smooth background color transition */
+        }
+
+        input[type="submit"]:hover,
+        input[type="reset"]:hover,
+        #ad,
+        #generateKeyButton:hover,
+        #copyKeyButton:hover {
+            background-color: #cc0000; /* Darker red on hover */
+        }
+
+        .alert {
+            padding: 20px;
+            background-color: #e40f00; /* Red background */
+            color: rgb(255, 255, 255); /* White text */
+            position: fixed;
+            margin-top: 15px;
+            border-radius: 5px;
+            animation: fadeIn 1s; /* Animation for showing */
+        }
+
+        .alert .closebtn {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .generatedKey {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #ffcc00; /* Yellow color for the key */
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 0 0 20px rgba(255, 204, 0, 0.6); /* Glowing effect */
+            animation: fadeIn 1s; /* Animation for showing */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background"></div> <!-- Animated Background Element -->
+
+    <div class="form-container" id="formContainer">
+        <h2>User Registration</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" required name="name_txt" id="name_txt" minlength="1" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" /></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="email" required name="email_reg" id="email_reg"></td>
+                </tr>
+                <tr>
+                    <td>Contact</td>
+                    <td><input type="text" name="phn_reg" id="phn_reg" pattern="[6-9]{1}[0-9]{9}" title="Phone number with 6-9 and remaining 9 digits with 0-9" required></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td><textarea name="addr_reg" id="addr_reg" rows="3" cols="20" required></textarea></td>
+                </tr>
+                <tr>
+                    <td>District</td>
+                    <td>
+                        <select name="sel_district" id="sel_district" required>
+                            <option value="">Select District</option>
+                            {% for i in dis %}
+                            <option value="{{i.id}}">{{i.district_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Place</td>
+                    <td>
+                        <select name="sel_place" id="sel_place" required>
+                            <option value="">Select Place</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Photo</td>
+                    <td><input type="file" value="Browse" name="txt_photo" id="txt_photo"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" name="pass_reg" id="pass_reg" minlength="6" maxlength="16" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required></td>
+                </tr>
+                
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="Submit">
+                        <input type="reset" value="Cancel">
+                        <input type="button" onclick="userSignUp()" value="Home Page" id="ad">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        {% if msg %}
+        <script>
+            alert("{{ msg }}")
+            window.location = "{% url 'Guest:UserRegistration' %}";
+        </script>
+        {% endif %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Show the form after a delay of 3 seconds
+        setTimeout(function () {
+            document.getElementById('formContainer').classList.add('show');
+        }, 1000);
+
+        $("#sel_district").change(function () {
+            var did = $(this).val();
+            var ur = "{% url 'Guest:ajaxplace' %}";
+            $.ajax({
+                url: ur,
+                data: { did: did },
+                success: function (data) {
+                    $("#sel_place").html(data);
+                },
+            });
+        });
+
+        function userSignUp() {
+            window.location.href = "{% url 'Guest:index' %}";
+            // Redirect or handle user sign up logic here
+        }
+
+        
+
+    
+    </script>
+
+</body>
+</html>

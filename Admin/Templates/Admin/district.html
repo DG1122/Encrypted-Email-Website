@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        {%csrf_token%}
+        <table border="1">
+            <tr>
+                <td>District</td>
+                <td><input type="text" name="txt_district" id=""  value="{{disdata.district_name}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Add" name="btn"></td>
+            
+            </tr>
+        </table>
+        {%  if  districtData %}
+        <table border="1">
+            <tr>
+                <th>Sl.no</th>
+                <th>District</th>
+                <th>Action</th>
+            </tr>
+            {%  for i in districtData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.district_name}}</td>
+                <td><a href="{%  url 'Admin:DeleteDistrict' i.id %}">Delete</a>&nbsp;<a href="{%  url 'Admin:UpdateDistrict' i.id %}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </form>
+    {% if msg %}
+        <div class="alert">
+            <script>
+                alert("{{msg}}");
+                window.location = "{% url 'Admin:district' %}";
+            </script>
+        </div>
+        {% endif %}
+</body>
+</html>

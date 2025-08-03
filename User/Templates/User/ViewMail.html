@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email View</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000; /* Black background */
+            color: #FFF; /* White text */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #FF0000; /* Red heading */
+            margin-bottom: 20px;
+        }
+        .email-detail {
+            background-color: #333; /* Dark grey background for email details */
+            border: 2px solid #FF0000; /* Red border */
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%; /* Responsive width */
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Glow effect */
+        }
+        .sender-id {
+            margin: 15px 0;
+            font-style: italic; /* Italicize sender email */
+        }
+        .message {
+            margin-top: 15px;
+            line-height: 1.6; /* Improved readability */
+        }
+        .form-container {
+            background-color: #333; /* Dark grey background for the form */
+            border: 2px solid #FF0000; /* Red border */
+            border-radius: 10px;
+            padding: 40px;
+            width: 300px; /* Fixed width for the form */
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); /* Red glow effect */
+            transition: transform 0.2s; /* Basic animation for the form */
+        }
+
+        .form-container:hover {
+            transform: scale(1.05); /* Enlarge on hover */
+        }
+
+        input[type="text"] {
+            width: 85%; /* Responsive width */
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #FF0000; /* Red border for input */
+            border-radius: 5px;
+            background-color: #444; /* Dark grey input background */
+            color: #FFF; /* White text for input */
+            transition: border-color 0.3s; /* Border color transition */
+        }
+
+        input[type="text"]:focus {
+            border-color: #FF7F7F; /* Lighter red on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        input[type="submit"] {
+            background-color: #FF0000; /* Red button */
+            color: white; /* White text */
+            padding: 10px 20px;
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded edges */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s; /* Transitions for button */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FF7F7F; /* Lighter red on hover */
+            transform: scale(1.05); /* Enlarge on hover */
+        }
+
+        input[type="submit"]:active {
+            transform: scale(0.95); /* Shrink on click */
+        }
+    </style>
+</head>
+<body>
+    {% if mail %}
+    <div class="email-detail">
+        <h1>{{mail.mail_subject}}</h1>
+        <div class="sender-id">From: {{mail.user_from.user_email}}</div>
+        <div class="message">
+            <p>
+                {{cont}}
+            </p>
+        </div>
+    </div>
+    {% else %}
+    
+    <div class="form-container">
+        <h2>Key</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="txt_key" placeholder="Enter your Key..." required>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    {% endif %}
+    
+</body>
+</html>
